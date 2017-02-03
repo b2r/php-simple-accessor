@@ -1,0 +1,25 @@
+{
+    "name": "b2r/simple-accessor",
+    "type": "library",
+    "description": "",
+    "keywords": [],
+    "homepage": "https://github.com/b2r/php-simple-accessor",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "b2r",
+            "email": "b2r.net@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "b2r/exception": "~0.1"
+    },
+    "autoload": {
+        "psr-4": { "b2r\\Component\\SimpleAccessor\\": "" },
+        "exclude-from-classmap": [
+            "/build/",
+            "/Tests/"
+        ]
+    }
+}
