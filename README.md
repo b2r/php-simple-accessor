@@ -7,7 +7,6 @@ Simple accessor trait
 
 - [CHANGELOG](CHANGELOG.md)
 
-
 Traits
 ------
 - Getter
@@ -24,7 +23,6 @@ class Foo
     use Accessor;
 
     private $value = 0;
-
 
     public function getSquare()
     {
@@ -47,6 +45,9 @@ var_dump($foo->square); #=>int(100) Invoke `getSquare()`
 
 Getter::getPropertyValue
 ------------------------
+
+Getter core method
+
 `protected function getPropertyValue($name, array $options = null)`
 
 ```php
@@ -60,6 +61,9 @@ $options = [
 
 Setter::setPropertyValue
 ------------------------
+
+Setter core method
+
 `protected function setPropertyValue($name, $value, array $options = null)`
 
 ```php
@@ -70,4 +74,64 @@ $options = [
     'update'    => false,   # Update private/protected property?
     'strict'    => true,    # Thorw exception?
 ]
+```
+
+More samples
+--------------------
+
+### Loose
+
+Do not throw exception
+
+```php
+use b2r\Component\SimpleAccessor\Accessor;
+
+class Foo
+{
+    use Accessor;
+
+    private $value = 0;
+
+    public function __get($name)
+    {
+        return $this->getPropertyValue($name, [
+            'strict'  => false,
+            'default' => 'Default value for undefined property'
+        ]);
+    }
+}
+
+$foo = new Foo();
+var_dump($foo->undefined); #=>"Default value for undefined property"
+```
+
+### Immutable
+
+Immutable (write once)
+
+```php
+
+use b2r\Component\SimpleAccessor\Accessor;
+
+class Foo
+{
+    use Accessor;
+
+    private $value = 0;
+
+    public function __set($name, $value)
+    {
+        return $this->setPropertyValue($name, $value, ['immutable' => true]);
+    }
+
+    protected function setValue($value)
+    {
+        $this->value = (int)$value;
+    }
+}
+
+$foo = new Foo();
+$foo->value = '10'; # Invoke `setValue()`
+var_dump($foo->value); #=>int(10)
+$foo->value = 100; #=>b2r\Component\Exception\InvalidPropertyException: Invalid property Foo::$value is immutable
 ```
